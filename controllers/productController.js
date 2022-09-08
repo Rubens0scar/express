@@ -39,3 +39,37 @@ exports.getProductById = async (req, res) => {
     });
   }
 };
+
+exports.deleteProductById = async (req, res) => {
+  const foundProduct = await Product.findByPk(req.params.id);
+  if (foundProduct) {
+    Product.findByPk(req.params.id).then(function(foundProduct) {
+      foundProduct.destroy();
+    }).then((foundProduct) => {
+      res.sendStatus(200);
+    });
+  } else {
+    res.status(404).json({
+      status: "not found",
+    });
+  }
+};
+
+exports.updateProductById = async (req, res) => {
+  const foundProduct = await Product.findByPk(req.params.id);
+  if (foundProduct) {
+    Product.findByPk(req.params.id).then(function(foundProduct) {
+      foundProduct.update({
+        productName: req.body.productName==="undefined"?foundProduct.productName:req.body.productName, 
+        price: req.body.price==="undefined"?foundProduct.price:req.body.price, 
+        description: req.body.description==="undefined"?foundProduct.description:req.body.description, 
+      }).then((foundProduct) => {
+        res.json(foundProduct);
+      });
+    });
+  } else {
+    res.status(404).json({
+      status: "not found",
+    });
+  }
+};
