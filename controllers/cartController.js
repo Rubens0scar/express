@@ -68,7 +68,7 @@ exports.cartProduct =  catchAsync(async (req, res) => {
             newCart = await newCart.save();
             idcart=newCart.id;
         }
-        let erro;
+        let erro="";
         req.body.forEach(async element => {
             const foundProduct = await Product.findOne({ where: { productName: element.product } });
             if(foundProduct){
@@ -78,9 +78,8 @@ exports.cartProduct =  catchAsync(async (req, res) => {
             }else{
                 erro = erro + "No existe el producto " + element.product + "\n";
             }
-
-            console.log(erro);
         });
+        console.log(erro);
         res.status(200).json({
             status: "Product processed correctly",
         });
